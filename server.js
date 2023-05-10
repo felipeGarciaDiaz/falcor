@@ -1,5 +1,5 @@
-var express = require("express");
-var app = express();
+const express = require("express");
+const app = express();
 
 // Exports
 module.exports = {
@@ -12,7 +12,12 @@ function listen(serverPort, launchWindow, cb) {
             cb();
         }
         if (launchWindow) {
-            require("child_process").exec("open http://localhost:" + serverPort);
+            try {
+                require("child_process").exec("open http://localhost:" + serverPort);
+            }
+            catch(err) {
+             console.error(err);   
+            }
         }
     });
 }
@@ -24,8 +29,8 @@ function coverage(serverPort, launchWindow) {
 
 // Run if main
 if (require.main === module) {
-    var port = process.argv[2] || 8080;
-    var run = process.argv[3];
+    const port = process.argv[2] || 8080;
+    const run = process.argv[3];
     switch (run) {
         case "examples":
             app.use(express.static("."));
